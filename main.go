@@ -20,6 +20,13 @@ func (g *Godefault[T]) GetDefault(fieldName string) (interface{}, bool) {
 	ret, ok := vmap[fieldName]
 	return ret, ok
 }
+func (g *Godefault[T]) GetValue(p *T, fieldName string) (interface{}, bool) {
+	v := reflect.ValueOf(p).FieldByName(fieldName)
+	if v.IsZero() {
+		return g.GetDefault(fieldName)
+	}
+	return v, true
+}
 
 func GetDefaultValue(t reflect.Type) map[string]interface{} {
 	ret := map[string]interface{}{}

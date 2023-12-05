@@ -1,3 +1,4 @@
+// Package godefaultvalue is for mark default value and get default for struct
 package godefaultvalue
 
 import (
@@ -10,6 +11,7 @@ var DefaultValueMap = map[string]map[string]interface{}{}
 type Godefault[T any] struct {
 }
 
+// Function GetDefault is used to get default value by fieldName
 func (g *Godefault[T]) GetDefault(fieldName string) (interface{}, bool) {
 	tName := reflect.TypeOf(*g).Name()
 	vmap, ok := DefaultValueMap[tName]
@@ -20,6 +22,8 @@ func (g *Godefault[T]) GetDefault(fieldName string) (interface{}, bool) {
 	ret, ok := vmap[fieldName]
 	return ret, ok
 }
+
+// Function GetValue is used to get p.[filedName], if get zero, return default value
 func (g *Godefault[T]) GetValue(p *T, fieldName string) (interface{}, bool) {
 	v := reflect.ValueOf(p).FieldByName(fieldName)
 	if v.IsZero() {
